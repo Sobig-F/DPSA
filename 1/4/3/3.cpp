@@ -1,88 +1,98 @@
-#include "struct.h"
+#include <iostream>
 
-#define CHOICE_MAIN_ACTION "1 - Print\n\
-2 - Find\n\
-3 - Add empty list\n\
-4 - Add element\n\
-5 - Delete element\n\
-6 - Del list\n\
-7 - exit\n\
+#include "List.hpp"
+
+#define MENU "1 - Print\n\
+2 - Exist\n\
+3 - PushListBefore\n\
+4 - PushListAfter\n\
+5 - PushElemBefore\n\
+6 - PushElemAfter\n\
+7 - DeleteList\n\
+8 - DeleteElem\n\
+9 - exit\n\
 Choise: "
 
-int main(int argc, char *argv[]) {
-    ListOfLists *list = new ListOfLists();
-    int element;
-    int main_action = 0;
-    while (main_action != 7) {
-        cout << CHOICE_MAIN_ACTION;
-        cin >> main_action;
-        switch (main_action)
+int Get(std::string value_)
+{
+    int result = 0;
+
+    std::cout << value_ << ": ";
+    std::cin >> result;
+
+    return result;
+}
+
+int main()
+{
+    Node* List = nullptr;
+    int head, target, data;
+    int action = 0;
+    
+    while (true)
+    {
+        std::cout << MENU;
+        std::cin >> action;
+        switch (action)
         {
         case 1:
-            list->print();
+            Print(List);
             break;
-        case 2: {
-            cout << "Enter find element : ";
-            cin >> element;
-            int listIndex, elemIndex;
-            list->findElement(element, &listIndex, &elemIndex);
-            if (listIndex >= 0) {
-                cout << "Element - {" << listIndex << "}[" << elemIndex << "]" << endl;
-            } else {
-                cout << "Element not found" << endl;
-            }
-            break;
-        }
-        case 3: {
-            list->addList();
-            break;
-        }
-        case 4: {
-            int index;
-            int element;
-            cout << "Enter list index: ";
-            cin >> index;
-            cout << "Enter element data: ";
-            cin >> element;
-            list->addElement(index, element);
-            break;
-        }
-        case 5: {
-            // int listIndex, elemIndex;
-            // cout << "Enter List index: ";
-            // cin >> listIndex;
-            // cout << "Enter element index: ";
-            // cin >> elemIndex;
-            // list->deleteElement(listIndex, elemIndex);
 
-            int data;
-            cout << "Enter element: ";
-            cin >> data;
-            if (list->deleteElement(data)) {
-                cout << "Element delete" << endl;
-            } else {
-                cout << "Element not delete" << endl;
+        case 2:
+            data = Get("Data");
+            if (Exist(List, data))
+            {
+                std::cout << "Yes";
+            } else
+            {
+                std::cout << "No";
             }
+            std::cout << std::endl;
             break;
-        }
-        case 6: {
-            int index;
-            cout << "Enter list index: ";
-            cin >> index;
-            if (list->deleteList(index)) {
-                cout << "List delete" << endl;
-            } else {
-                cout << "List not delete" << endl;
-            }
 
+        case 3:
+            target = Get("Target");
+            data = Get("Data");
+            List = PushListBefore(List, target, data);
             break;
-        }
+
+        case 4:
+            target = Get("Target");
+            data = Get("Data");
+            List = PushListAfter(List, target, data);
+            break;
+
+        case 5:
+            head = Get("Head");
+            target = Get("Target");
+            data = Get("Data");
+            PushElemBefore(List, head, target, data);
+            break;
+
+        case 6:
+            head = Get("Head");
+            target = Get("Target");
+            data = Get("Data");
+            PushElemAfter(List, head, target, data);
+            break;
+
         case 7:
-            cout << "Exit..." << endl;
+            target = Get("Target");
+            List = DeleteList(List, target);
             break;
+
+        case 8:
+            head = Get("Head");
+            target = Get("Target");
+            DeleteElem(List, head, target);
+            break;
+
+        case 9:
+            return 0;
+
         default:
             break;
         }
     }
-    delete list;
 }
