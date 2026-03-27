@@ -60,6 +60,7 @@ Node* PushListBefore(Node* list_, int target_, int data_)
 {
     if (list_ == nullptr)
     {
+        std::cout << "False" << std::endl;
         return list_;
     }
 
@@ -91,6 +92,11 @@ Node* PushListBefore(Node* list_, int target_, int data_)
         }
 
         break;
+    }
+
+    if (base == nullptr)
+    {
+        std::cout << "False" << std::endl;
     }
 
     return list_;
@@ -134,6 +140,11 @@ Node* PushListAfter(Node* list_, int target_, int data_)
         break;
     }
 
+    if (base == nullptr)
+    {
+        std::cout << "False" << std::endl;
+    }
+
     return list_;
 }
 
@@ -141,6 +152,7 @@ void PushElemBefore(Node* list_, int head_, int target_, int data_)
 {
     if (list_ == nullptr)
     {
+        std::cout << "False" << std::endl;
         return;
     }
 
@@ -149,7 +161,6 @@ void PushElemBefore(Node* list_, int head_, int target_, int data_)
 
     while (base != nullptr)
     {
-        // std::cout << base->_data << std::endl;
         if (base->_data != head_)
         {
             base = base->_next;
@@ -160,7 +171,6 @@ void PushElemBefore(Node* list_, int head_, int target_, int data_)
         
         while (nested != nullptr)
         {
-            // std::cout << nested->_data << std::endl;
             if (nested->_data != target_)
             {
                 nested = nested->_next;
@@ -184,7 +194,7 @@ void PushElemBefore(Node* list_, int head_, int target_, int data_)
 
             return;
         }
-
+        std::cout << "False" << std::endl;
         return;
     }
 }
@@ -245,16 +255,19 @@ void PushElemAfter(Node* list_, int head_, int target_, int data_)
             return;
         }
     }
+    std::cout << "False" << std::endl;
 }
 
 Node* DeleteList(Node* list_, int target_)
 {
     if (list_ == nullptr)
     {
+        std::cout << "False" << std::endl;
         return list_;
     }
 
     Node* base = list_;
+    bool result = false;
 
     while (base != nullptr)
     {
@@ -295,7 +308,13 @@ Node* DeleteList(Node* list_, int target_)
         }
 
         delete base;
+        result = true;
         break;
+    }
+
+    if (!result)
+    {
+        std::cout << "False" << std::endl;
     }
 
     return list_;
@@ -341,4 +360,5 @@ void DeleteElem(Node* list_, int head_, int target_)
             return;
         }
     }
+    std::cout << "False" << std::endl;
 }

@@ -2,7 +2,7 @@
 
 List::~List()
 {
-    while (_head->_next != _head)
+    while (_head != nullptr && _head->_next != _head)
     {
         delete _head->_next;
     }
@@ -10,7 +10,7 @@ List::~List()
     delete _head;
 }
 
-List::Node::Node(int data_ = 0, Node* prev_ = nullptr, Node* next_ = nullptr)
+List::Node::Node(int data_, Node* prev_, Node* next_)
 : _data{data_}
 , _prev{prev_}
 , _next{next_}
@@ -28,8 +28,14 @@ List::Node::Node(int data_ = 0, Node* prev_ = nullptr, Node* next_ = nullptr)
 List::Node::~Node()
 {
     _data = 0;
-    _next->_prev = _prev;
-    _prev->_next = _next;
+    if (_next)
+    {
+        _next->_prev = _prev;
+    }
+    if (_prev)
+    {
+        _prev->_next = _next;
+    }
     _next = nullptr;
     _prev = nullptr;
 }
@@ -139,7 +145,7 @@ int List::OppositeFind(int data_) const noexcept
 
 void List::ForwardView() const noexcept
 {
-    if (!_head)
+    if (_head == nullptr)
     {
         std::cout << "Empty" << std::endl;
         return;
@@ -183,8 +189,15 @@ void List::del(int data_) noexcept
         return;
     }
 
+    
     if (target == _head)
     {
+        if (_head->_next == _head)
+        {
+            delete _head;
+            _head = nullptr;
+            return;
+        }
         _head = _head->_next;
     }
 
