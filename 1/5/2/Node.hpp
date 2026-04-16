@@ -4,7 +4,7 @@
 struct Tree
 {
     int data;
-    int count;
+    // int count;
     int size;
     Tree* left;
     Tree* right;
