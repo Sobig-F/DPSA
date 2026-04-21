@@ -1,4 +1,4 @@
-#include "Node.hpp"
+#include "Tree.hpp"
 
 #include <iostream>
 #include "ctime"
@@ -54,7 +54,7 @@ void simmetric(Tree *p)
     {
         Tree* data;
         Stack* prev;
-        int level; // добавляем уровень для отступов
+        int level;
     };
     
     Stack* stack = nullptr;
@@ -80,7 +80,6 @@ void simmetric(Tree *p)
         {
             current = stack->data;
             
-            // Вывод с отступами
             for (int i = 0; i < stack->level; ++i)
             {
                 std::cout << "     ";

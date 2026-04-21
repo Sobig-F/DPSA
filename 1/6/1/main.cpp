@@ -8,6 +8,7 @@
 4 - delete node\n\
 5 - reverse\n\
 6 - simmetric line\n\
+7 - randomFill\n\
 0 - exit\n"
 
 int main()
@@ -62,6 +63,18 @@ int main()
         case 6:
         {
             simmetricLine(tree);
+            break;
+        }
+        case 7:
+        {
+            int start, end, count;
+            std::cout << "Start: ";
+            std::cin >> start;
+            std::cout << "End: ";
+            std::cin >> end;
+            std::cout << "Count: ";
+            std::cin >> count;
+            tree = randomFill(tree, start, end, count);
             break;
         }
             

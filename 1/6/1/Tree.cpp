@@ -47,6 +47,14 @@ Tree* insertRecursion(Tree *p_, int data_)
 
 Tree* insert(Tree *p_, int data_)
 {
+    if (p_ == nullptr)
+    {
+        p_ = new Tree();
+        p_->_data = data_;
+
+        return p_;
+    }
+
     Tree *current = p_;
 
     while (current != nullptr)
@@ -54,7 +62,7 @@ Tree* insert(Tree *p_, int data_)
         if (current->_data == data_)
         {
             ++current->_count;
-            current = nullptr;
+            return p_;
         } else if (current->_data > data_)
         {
             if (current->_left == nullptr)
@@ -70,12 +78,6 @@ Tree* insert(Tree *p_, int data_)
             }
             current = current->_right;
         }
-    }
-
-    if (current == nullptr)
-    {
-        p_ = new Tree();
-        p_->_data = data_;
     }
 
     if (current->_data > data_)
@@ -110,6 +112,12 @@ Tree* deleteNode(Tree *p_, int data_)
 
     if (current == nullptr)
     {
+        return p_;
+    }
+
+    if (current->_count > 1)
+    {
+        --current->_count;
         return p_;
     }
 
@@ -156,6 +164,18 @@ Tree* deleteNode(Tree *p_, int data_)
     }
     delete current;
     
+    return p_;
+}
+
+Tree* randomFill(Tree* p_, int start_, int end_, int count)
+{
+    int determ = (end_ - start_ + 1);
+
+    for (int i = 0; i < count; ++i)
+    {
+        p_ = insert(p_, rand() % determ + start_);
+    }
+
     return p_;
 }
 

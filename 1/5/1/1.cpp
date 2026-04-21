@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Node.hpp"
+#include "Tree.hpp"
 
 #define MAIN "1 - random filling\n\
 2 - direct bypass\n\

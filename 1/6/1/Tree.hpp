@@ -15,6 +15,8 @@ Tree* insert(Tree *p_, int data_);
 Tree* deleteNode(Tree *p_, int data_);
 Tree* clean(Tree *p_);
 
+Tree* randomFill(Tree* p_, int start_, int end_, int count);
+
 void reverse(Tree *p_, int space = 0);
 void simmetricLine(Tree *p_);
 

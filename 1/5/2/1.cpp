@@ -1,4 +1,4 @@
-#include "Node.hpp"
+#include "Tree.hpp"
 
 #include <iostream>
 
@@ -12,7 +12,7 @@ Choice : "
 
 int main (int argc, char *argv[])
 {
-    Tree *tree = new Tree();
+    Tree *tree = nullptr;
 
     int action = 0;
 
@@ -27,7 +27,7 @@ int main (int argc, char *argv[])
             int count;
             std::cout << "Enter count: ";
             std::cin >> count;
-            random_filling(tree, 0, 100, count);
+            tree = random_filling(tree, 0, 100, count);
             break;
         }
         case 2:
