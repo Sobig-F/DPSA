@@ -1,5 +1,7 @@
 */*.vscode
+.vscode
 *.exe
 *.out
 *.gch
 *.pch
+build

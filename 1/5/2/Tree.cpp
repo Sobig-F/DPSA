@@ -133,3 +133,18 @@ Tree* random_filling(Tree* tree, int start, int end, int count)
     tree->right = random_filling(tree->right, start, end, Nr);
     return tree;
 }
+
+Tree* clean(Tree *p_)
+{
+    if (p_ == nullptr)
+    {
+        return p_;
+    }
+
+    p_->left = clean(p_->left);
+    p_->right = clean(p_->right);
+
+    delete(p_);
+
+    return nullptr;
+}

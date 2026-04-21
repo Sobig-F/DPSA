@@ -1,8 +1,5 @@
 #include "Train.hpp"
 
-namespace obj
-{
-
 Train::Train()
 {
     _stamp = "";
@@ -18,4 +15,11 @@ Train::~Train(){}
 std::string Train::getStamp(){ return _stamp; }
 std::string Train::getRegNum(){ return _reg_num; }
 
-} // namespace obj
+void Train::show(int tab_count_)
+{
+    for (int i = 0; i < tab_count_; ++i)
+    {
+        std::cout << '\t';
+    }
+    std::cout << "Name: " << _stamp << " / RegNum: " << _reg_num << std::endl;
+}

@@ -7,16 +7,13 @@
     <ClCompile Include="D:\Study\DPSA\kursach\src\Depot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Study\DPSA\kursach\src\PriorityQueue.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="D:\Study\DPSA\kursach\src\Railway.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Study\DPSA\kursach\src\StaticQueue.cpp">
+    <ClCompile Include="D:\Study\DPSA\kursach\src\Train.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Study\DPSA\kursach\src\Train.cpp">
+    <ClCompile Include="D:\Study\DPSA\kursach\src\fs_operations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -24,19 +21,13 @@
     <ClInclude Include="D:\Study\DPSA\kursach\headers\Depot.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Study\DPSA\kursach\headers\PriorityQueue.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="D:\Study\DPSA\kursach\headers\Railway.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Study\DPSA\kursach\headers\StaticQueue.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D:\Study\DPSA\kursach\headers\Train.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D:\Study\DPSA\kursach\headers\a.hpp">
+    <ClInclude Include="D:\Study\DPSA\kursach\headers\fs_operations.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

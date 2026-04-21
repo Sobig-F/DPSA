@@ -1,49 +1,57 @@
 #ifndef RAILWAY_HPP
 #define RAILWAY_HPP
 
-#include <string>
+#include <iostream>
 
-#include "PriorityQueue.hpp"
 #include "Depot.hpp"
 
-namespace obj
+struct TrainInfo
 {
-/**
- * @brief Железная дорога (динамическая приоритетная очередь)
- */
+    std::string _stamp;
+    std::string _reg_num;
+    std::string _depot_number;
+
+    TrainInfo( 
+        std::string stamp_ = "",
+        std::string reg_num_ = "",
+        std::string depot_number_ = ""
+    ) :
+        _stamp{stamp_},
+        _reg_num{reg_num_},
+        _depot_number{depot_number_}
+    {}
+};
+
 class Railway
 {
-public:
-    Railway(std::string name_);
-    ~Railway();
-
-    /**
-     * @brief Добавление нового депо
-     * @param stamp_ Номер добавляемого депо
-     * @param capacity_ Кол-во вмещающихся электровозов (размер массива статической очереди)
-     * @retval True - депо добавлено
-     * @retval False - депо не добавлено
-     */
-    bool AddDepot(int stamp_, int capacity_);
-
-    /**
-     * @brief Удаление депо
-     * @retval True - депо удалено
-     * @retval False - депо не удалено
-     */
-    bool DeleteDepot(int stamp_);
-
 private:
-    /**
-     * @brief Название дороги
-     */
     std::string _name;
 
-    /**
-     * @brief Приоритетная очередь депо
-     */
-    types::PriorityQueue<Depot> _depots_queue;
+    struct Node
+    {
+        Depot* _depot;
+        Node* _prev;
+        Node* _next;
+
+        Node(Depot* depot_) : _depot{depot_}, _next{nullptr}, _prev{nullptr}{};
+    };
+    
+    Node* _queue;
+    Node* _tail;
+public:
+    Railway(std::string name_) : _name{name_}, _queue{nullptr}, _tail{nullptr}{};
+    ~Railway();
+
+    bool addDepot(std::string number_, int capacity_);
+    bool deleteDepot(std::string number_);
+    bool addTrain(std::string depot_number_, Train* train_);
+    Train* popTrain();
+
+    Depot* findDepot(std::string depot_number_);
+    TrainInfo findTrainInRailway(std::string reg_num_);
+    TrainInfo findTrainInDepot(std::string reg_num_, std::string depot_number_);
+
+    void show(int tab_count_ = 0);
 };
-} // namespace obj
 
 #endif

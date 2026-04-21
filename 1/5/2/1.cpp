@@ -49,4 +49,9 @@ int main (int argc, char *argv[])
             break;
         }
     }
+
+    if (tree != nullptr)
+    {
+        tree = clean(tree);
+    }
 }

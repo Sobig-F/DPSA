@@ -1,9 +1,12 @@
-#include "iostream"
+#include <iostream>
 
-#include "../sorts.h"
-#include "../random_filling.h"
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
-using namespace std;
+#include <ctime>
+
+#include "../sorts.hpp"
 
 #define MAIN "1 - сортировка обменом\n\
 2 - сортировка выбором\n\
@@ -14,75 +17,94 @@ using namespace std;
 7 - выход\n\
 Выбор : "
 
+int* random_filling (int start, int end, int count)
+{
+    int *result = new int[count];
+
+    srand(time(0));
+
+    int determ = (end - start + 1);
+
+    for (int i = 0; i < count; ++i)
+    {
+        result[i] = rand() % determ + start;
+    }
+
+    return result;
+}
+
 void print_array (int *array, int count)
 {
     for (int i = 0; i < count; ++i)
     {
-        cout << *(array + i) << " ";
+        std::cout << *(array + i) << " ";
     }
 
-    cout << endl;
+    std::cout << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
+    #ifdef _WIN32
+        system("chcp 65001 > nul");
+        SetConsoleOutputCP(CP_UTF8);
+    #endif
     int start;
     int end;
     int count;
 
-    cout << "Start: ";
-    cin >> start;
+    std::cout << "Start: ";
+    std::cin >> start;
 
-    cout << "End: ";
-    cin >> end;
+    std::cout << "End: ";
+    std::cin >> end;
 
-    cout << "Count: ";
-    cin >> count;
+    std::cout << "Count: ";
+    std::cin >> count;
 
     int action = 0;
     int *array = nullptr;
 
     while (action != 7)
     {
-        cout << MAIN;
-        cin >> action;
+        std::cout << MAIN;
+        std::cin >> action;
 
-        if (action != 7)
+        if (action == 7)
+        {
+            break;
+        }
+
+        if (array != nullptr)
         {
             delete array;
-            array = random_filling<int>(start, end, count);
         }
+        array = random_filling(start, end, count);
+
+        print_array(array, count);
 
         switch (action)
         {
-            case 1:
-                sorting_by_exchange(array, count);
-                print_array(array, count);
-                break;
-            case 2:
-                sorting_by_choice(array, count);
-                print_array(array, count);
-                break;
-            case 3:
-                sorting_by_inserts(array, count);
-                print_array(array, count);
-                break;
-            case 4:
-                fast_sort(array, count);
-                print_array(array, count);
-                break;
-            case 5:
-                piramidal_sort(array, count);
-                print_array(array, count);
-                break;
-            case 6:
-                shell_sort(array, count);
-                print_array(array, count);
-                break;
-            case 7:
-                delete array;
-                cout << "Exit . . ." << endl;
-                break;
+        case 1:
+            sorting_by_exchange(array, count);
+            break;
+        case 2:
+            sorting_by_choice(array, count);
+            break;
+        case 3:
+            sorting_by_inserts(array, count);
+            break;
+        case 4:
+            fast_sort(array, count);
+            break;
+        case 5:
+            piramidal_sort(array, count);
+            break;
+        case 6:
+            shell_sort(array, count);
+            break;
         }
+
+        print_array(array, count);
     }
 }

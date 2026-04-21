@@ -1,70 +1,43 @@
 #ifndef DEPOT_HPP
 #define DEPOT_HPP
 
-#include "Railway.hpp"
-#include "StaticQueue.hpp"
+#include <iostream>
+
 #include "Train.hpp"
 
-namespace obj
-{
-/**
- * @brief Депо (статическая очередь)
- */
 class Depot
 {
+private:
+    std::string _number;
+    int _capacity;
+    int _count;
+
+    Train** _queue;
+    int _head;
+    int _tail;
+    
 public:
-    Depot(int stamp_, int capacity_);
+    Depot(std::string number_, int capacity_)
+        :   _number{number_},
+            _capacity{capacity_},
+            _queue{new Train*[_capacity]},
+            _head{0},
+            _tail{0},
+            _count{0}
+    {};
+
     ~Depot();
 
-    /**
-     * @brief Добавить электровоз в депо
-     * @param stamp_ Марка
-     * @param reg_num_ Регистрационный номер
-     */
-    bool AddTrain(std::string stamp_, std::string reg_num_);
+    bool addTrain(Train* elem_);
+    Train* popTrain();
 
-    /**
-     * @brief Удалить электровоз
-     * @param reg_num_ Регистрационный номер
-     */
-    bool DeleteTrain(std::string reg_num_);
+    std::string getNumber();
+    int getCapacity();
+    int getCount();
 
-    /**
-     * @brief Приоритет обработки депо
-     */
-    int getPriority(){ return _priority; };
+    Train* findTrain(std::string reg_num_);
 
-    /**
-     * @brief Перегрузка оператора для сравнения депо по загруженности
-     */
-    std::strong_ordering operator<=>(const Depot& other) const;
-
-private:
-    /**
-     * @brief Железная дорога, которой принадлежит депо
-     */
-    Railway* _railway;
-
-    /**
-     * @brief Номер депо
-     */
-    int _stamp;
-
-    /**
-     * @brief Вместительность
-     */
-    int _capacity;
-
-    /**
-     * @brief Приоритет обработки депо (равен количество электровозов в очереди)
-     */
-    int _priority;
-
-    /**
-     * @brief Статическая очередь электровозов
-     */
-    types::StaticQueue<Train> _trains_queue;
+    void show(int tab_count_);
 };
-} // namespace obj
 
 #endif
