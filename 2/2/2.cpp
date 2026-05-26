@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
         system("chcp 65001 > nul");
         SetConsoleOutputCP(CP_UTF8);
     #endif
+
     int start;
     int end;
     int count;
@@ -106,5 +107,13 @@ int main(int argc, char *argv[])
         }
 
         print_array(array, count);
+
+        if (check_result(array, count))
+        {
+            std::cout << "Sort success" << std::endl;
+        } else 
+        {
+            std::cout << "Sort failed" << std::endl;
+        }
     }
 }

@@ -22,7 +22,7 @@ void sorting_by_choice (int *array, int size)
 
         if (min_index != i)
         {
-            ++permutations;
+            permutations += 3;
             *(array + min_index) += *(array + i);
             *(array + i) = *(array + min_index) - *(array + i);
             *(array + min_index) -= *(array + i);
@@ -45,7 +45,7 @@ void sorting_by_exchange (int *array, int size)
             ++comparisons;
             if (*(array + j) > *(array + j + 1))
             {
-                ++permutations;
+                permutations += 3;
                 *(array + j) += *(array + j + 1);
                 *(array + j + 1) = *(array + j) - *(array + j + 1);
                 *(array + j) = *(array + j) - *(array + j + 1);
@@ -62,18 +62,25 @@ void sorting_by_inserts (int *array, int size)
     int comparisons = 0;
     int permutations = 0;
 
+    int temp = 0;
+
     for (int i = 0; i + 1 < size; ++i)
     {
         ++comparisons;
         if (*(array + i) > *(array + i + 1))
         {
-            for (int j = i + 1; j > 0 && *(array + j - 1) > *(array + j); --j)
+            ++permutations;
+            temp = *(array + i + 1);
+            int j = i;
+            while (j >= 0 && *(array + j) > temp)
             {
+                ++comparisons;
                 ++permutations;
-                *(array + j) += *(array + j - 1);
-                *(array + j - 1) = *(array + j) - *(array + j - 1);
-                *(array + j) = *(array + j) - *(array + j - 1);
+                *(array + j + 1) = *(array + j);
+                --j;
             }
+            ++permutations;
+            *(array + j + 1) = temp;
         }
     }
 
@@ -134,7 +141,7 @@ std::pair<int, int> siftDown(int* array, int size, int root) {
 
         if (largest == root) { break; };
 
-        ++permutations;
+        permutations += 3;
         tmp = *(array + root);
         *(array + root) = *(array + largest);
         *(array + largest) = tmp;
@@ -193,7 +200,7 @@ void shell_sort (int *array, int size)
             {
                 for (int j = i + gap; j > 0 && *(array + j - gap) > *(array + j); j -= gap)
                 {
-                    ++permutations;
+                    permutations += 3;
                     *(array + j) += *(array + j - gap);
                     *(array + j - gap) = *(array + j) - *(array + j - gap);
                     *(array + j) = *(array + j) - *(array + j - gap);
@@ -208,4 +215,17 @@ void shell_sort (int *array, int size)
 
     std::cout << "Сравнения: " << comparisons << std::endl;
     std::cout << "Перестановки: " << permutations << std::endl;
+}
+
+bool check_result(int *array, int size)
+{
+    for (int i = 0; i + 1 < size; ++i)
+    {
+        if (*(array + i) > *(array + i + 1))
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
