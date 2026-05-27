@@ -88,7 +88,7 @@ void sorting_by_inserts (int *array, int size)
     std::cout << "Перестановки: " << permutations << std::endl;
 }
 
-void fast_sort (int *array, int size, int left, int right)
+void fast_sort (int *array, int size, int *comparisons, int *permutations, int left, int right, int first)
 {
     if (right == -1)
     {
@@ -106,7 +106,9 @@ void fast_sort (int *array, int size, int left, int right)
 
         while (*(array + right_index) > pivot) { --right_index; }
 
+        ++(*comparisons);
         if (left_index <= right_index) {
+            *permutations += 3;
             int tmp = *(array + left_index);
             *(array + left_index) = *(array + right_index);
             *(array + right_index) = tmp;
@@ -115,8 +117,14 @@ void fast_sort (int *array, int size, int left, int right)
         }
     }
 
-    fast_sort(array, size, left, right_index);
-    fast_sort(array, size, left_index, right);
+    fast_sort(array, size, comparisons, permutations, left, right_index, 0);
+    fast_sort(array, size, comparisons, permutations, left_index, right, 0);
+
+    if (first)
+    {
+        std::cout << "Сравнения: " << *comparisons << std::endl;
+        std::cout << "Перестановки: " << *permutations << std::endl;
+    }
 }
 
 std::pair<int, int> siftDown(int* array, int size, int root) {
@@ -170,6 +178,7 @@ void piramidal_sort (int *array, int size)
 
     for (int i = size - 1; i > 0; --i)
     {
+        comparisons += 3;
         int tmp = *array;
         *array = *(array + i);
         *(array + i) = tmp;
@@ -188,23 +197,30 @@ void shell_sort (int *array, int size)
     int comparisons = 0;
     int permutations = 0;
 
+    int temp = 0;
+
     int start_gap = size / 10 + (size % 10 == 0 ? 0 : 1);
     int step = start_gap / 4 > 0 ? start_gap / 4 : 1;
 
     for (int gap = start_gap; true; gap = gap - step > 1 ? gap - step : 1)
     {
-        for (int i = 0; i + gap < size; i += gap)
+        for (int i = 0; i + 1 < size; i += gap)
         {
             ++comparisons;
-            if (*(array + i) > *(array + i + gap))
+            if (*(array + i) > *(array + i + 1))
             {
-                for (int j = i + gap; j > 0 && *(array + j - gap) > *(array + j); j -= gap)
+                ++permutations;
+                temp = *(array + i + 1);
+                int j = i;
+                while (j >= 0 && *(array + j) > temp)
                 {
-                    permutations += 3;
-                    *(array + j) += *(array + j - gap);
-                    *(array + j - gap) = *(array + j) - *(array + j - gap);
-                    *(array + j) = *(array + j) - *(array + j - gap);
+                    ++comparisons;
+                    ++permutations;
+                    *(array + j + 1) = *(array + j);
+                    --j;
                 }
+                ++permutations;
+                *(array + j + 1) = temp;
             }
         }
         if (gap == 1)

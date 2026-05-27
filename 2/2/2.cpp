@@ -96,8 +96,12 @@ int main(int argc, char *argv[])
             sorting_by_inserts(array, count);
             break;
         case 4:
-            fast_sort(array, count);
+        {
+            int comparisons = 0;
+            int permutations = 0;
+            fast_sort(array, count, &comparisons, &permutations);
             break;
+        }
         case 5:
             piramidal_sort(array, count);
             break;
