@@ -54,7 +54,7 @@ public:
 
     void show(int tab_count_ = 0);
 
-    bool Save(std::string filepath_, std::string filename_);
+    bool Save(std::string filepath_);
     static Railway* Extract(std::string filepath_);
 };
 

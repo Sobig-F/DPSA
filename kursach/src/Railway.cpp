@@ -1,5 +1,6 @@
 #include "Railway.hpp"
 
+#include <filesystem>
 #include <fstream>
 #include <string>
 
@@ -263,19 +264,26 @@ void Railway::show(int tab_count_)
     std::cout << std::endl;
 }
 
-bool Railway::Save(std::string filepath_, std::string filename_)
+bool Railway::Save(std::string filepath_)
 {
-    std::ofstream file(filepath_ + '/' + filename_);
+    std::filesystem::path filepath(filepath_);
+
+    if (filepath.has_parent_path())
+    {
+        std::filesystem::create_directories(filepath.parent_path());
+    }
+
+    std::ofstream file(filepath_);
 
     if (!file.is_open()) { return false; }
 
-    file << _name << "\n";
+    file << _name << '\n';
 
     for (Node* node = _queue; node != nullptr; node = node->_next)
     {
-        file    << node->_depot->getNumber()    << ' '
-                << node->_depot->getCapacity()  << ' ' 
-                << node->_depot->getCount()     << '\n';
+        file << '\n' << node->_depot->getNumber()    << ' '
+                     << node->_depot->getCapacity()  << ' ' 
+                     << node->_depot->getCount()     << '\n';
 
         int count = node->_depot->getCount();
         int capacity = node->_depot->getCapacity();

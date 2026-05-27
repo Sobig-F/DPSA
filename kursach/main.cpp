@@ -10,8 +10,7 @@
 
 #include "Railway.hpp"
 
-#define DEFAULT_EXTRACT_FILEPATH "./struct.txt"
-#define DEFAULT_SAVE_FILEPATH "./struct.txt"
+#define DEFAULT_FILEPATH "./struct.txt"
 
 #define MAIN_MENU "\
 1 - Добавить дорогу\n\
@@ -325,14 +324,35 @@ void save()
         return;
     }
 
-    railway->Save(".", "struct.txt");
+    std::string filepath = DEFAULT_FILEPATH;
+    
+    std::string user_input;
+
+    std::cout << "Путь к файлу (default: " << DEFAULT_FILEPATH << "): ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, user_input);
+
+    if (!user_input.empty())
+    {
+        filepath = user_input;
+    }
+    
+    bool result = railway->Save(filepath);
+
+    if (result)
+    {
+        std::cout << "Сохранено" << std::endl;
+    } else
+    {
+        std::cout << "Ошибка сохранения" << std::endl;
+    }
 }
 
 void extract()
 {
-    std::string filepath = DEFAULT_EXTRACT_FILEPATH;
+    std::string filepath = DEFAULT_FILEPATH;
     std::string user_input;
-    std::cout << "Путь к файлу (default: " << DEFAULT_EXTRACT_FILEPATH << "): " << std::flush;
+    std::cout << "Путь к файлу (default: " << DEFAULT_FILEPATH << "): " << std::flush;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::getline(std::cin, user_input);
 
