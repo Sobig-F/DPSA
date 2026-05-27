@@ -1,8 +1,7 @@
-*/*.vscode
-.vscode
-*.exe
-*.out
-*.gch
-*.pch
-*/*build
-*/*.DS_Store
+**/.vscode/
+**/*.exe
+**/*.out
+**/*.gch
+**/*.pch
+**/build/
+**/.DS_Store

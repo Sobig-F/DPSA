@@ -11,7 +11,7 @@ Depot::~Depot()
     }
     _number = "";
     _capacity = 0;
-    delete _queue;
+    delete[] _queue;
     _head = 0;
     _tail = 0;
     _count = 0;
