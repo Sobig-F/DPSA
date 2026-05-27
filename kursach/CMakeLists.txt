@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CONFIGURE_DEPENDS true)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR})
 
 # Исходные файлы
 file(GLOB SRC 
@@ -22,4 +22,8 @@ add_executable(train_management
 
 target_include_directories(train_management PRIVATE
     ${CMAKE_SOURCE_DIR}/headers
+)
+
+set_target_properties(train_management PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
