@@ -10,8 +10,8 @@ public:
     Train(std::string stamp_, std::string reg_num_);
     ~Train();
 
-    std::string getStamp();
-    std::string getRegNum();
+    std::string getStamp() const;
+    std::string getRegNum() const;
     void show(int tab_count_);
     
 private:

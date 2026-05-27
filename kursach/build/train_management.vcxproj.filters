@@ -13,9 +13,6 @@
     <ClCompile Include="D:\Study\DPSA\kursach\src\Train.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\Study\DPSA\kursach\src\fs_operations.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\Study\DPSA\kursach\headers\Depot.hpp">
@@ -25,9 +22,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D:\Study\DPSA\kursach\headers\Train.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D:\Study\DPSA\kursach\headers\fs_operations.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -51,9 +51,12 @@ Train* Depot::popTrain()
     return result;
 }
 
-std::string Depot::getNumber(){ return _number; }
-int Depot::getCapacity(){ return _capacity; }
-int Depot::getCount(){ return _count; }
+std::string Depot::getNumber() const { return _number; }
+int Depot::getCapacity() const { return _capacity; }
+int Depot::getCount() const { return _count; }
+int Depot::getHead() const { return this->_head; }
+
+const Train* const* Depot::getQueue() const { return this->_queue; }
 
 Train* Depot::findTrain(std::string reg_num_)
 {

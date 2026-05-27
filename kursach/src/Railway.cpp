@@ -1,5 +1,8 @@
 #include "Railway.hpp"
 
+#include <fstream>
+#include <string>
+
 Railway::~Railway(){}
 
 bool Railway::addDepot(std::string number_, int capacity_)
@@ -235,4 +238,94 @@ void Railway::show(int tab_count_)
     }
 
     std::cout << std::endl;
+}
+
+bool Railway::Save(std::string filepath_, std::string filename_)
+{
+    std::ofstream file(filepath_ + '/' + filename_);
+
+    if (!file.is_open()) { return false; }
+
+    file << this->_name << "\n";
+
+    for (Node* node = this->_queue; node != nullptr; node = node->_next)
+    {
+        file    << node->_depot->getNumber()    << ' '
+                << node->_depot->getCapacity()  << ' ' 
+                << node->_depot->getCount()     << '\n';
+
+        int count = node->_depot->getCount();
+        int capacity = node->_depot->getCapacity();
+        const Train* const* trains = node->_depot->getQueue();
+        const Train* train = nullptr;
+
+        for (int index = node->_depot->getHead(); index < count; ++index)
+        {
+            train = trains[index % capacity];
+
+            file    << train->getStamp()    << ' '
+                    << train->getRegNum()   << '\n';
+        }
+    }
+
+    file.close();
+
+    return true;
+}
+
+Railway* Railway::Extract(std::string filepath_)
+{
+    std::ifstream file(filepath_);
+
+    if (!file.is_open()) { return nullptr; }
+
+    std::string railway_name;
+
+    if (!std::getline(file, railway_name)) { return nullptr; }
+    if (railway_name.empty()) { return nullptr; }
+
+    Railway* railway = new Railway(railway_name);
+
+    while (true)
+    {
+        std::string depotNum;
+        int capacity = 0;
+        int count = -1;
+
+        if (!(file >> depotNum)) { break; }
+
+        // if ()
+        // {
+        //     delete railway;
+        //     return nullptr;
+        // }
+
+        if (!(file >> capacity >> count) || file.fail() || depotNum.empty() || capacity == 0 || count < 0)
+        {
+            delete railway;
+            return nullptr;
+        }
+
+        railway->addDepot(depotNum, capacity);
+
+        std::string stamp;
+        std::string regNum;
+
+        for (int i = 0; i < count; ++i)
+        {
+            if (!(file >> stamp >> regNum) ||
+                 (stamp.empty() || regNum.empty()))
+            {
+                delete railway;
+                return nullptr;
+            }
+
+            Train* train = new Train(stamp, regNum);
+            railway->addTrain(depotNum, train);
+        }
+    }
+
+    file.close();
+
+    return railway;
 }

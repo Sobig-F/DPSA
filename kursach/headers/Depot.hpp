@@ -31,9 +31,11 @@ public:
     bool addTrain(Train* elem_);
     Train* popTrain();
 
-    std::string getNumber();
-    int getCapacity();
-    int getCount();
+    std::string getNumber() const;
+    int getCapacity() const;
+    int getCount() const;
+    int getHead() const;
+    const Train* const* getQueue() const;
 
     Train* findTrain(std::string reg_num_);
 

@@ -12,8 +12,8 @@ Train::Train(std::string stamp_, std::string reg_num_)
 
 Train::~Train(){}
 
-std::string Train::getStamp(){ return _stamp; }
-std::string Train::getRegNum(){ return _reg_num; }
+std::string Train::getStamp() const { return _stamp; }
+std::string Train::getRegNum() const { return _reg_num; }
 
 void Train::show(int tab_count_)
 {

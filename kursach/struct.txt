@@ -1,0 +1,6 @@
+Doroga
+3 3 2
+mark2 mark22
+mark3 mark33
+1 4 1
+mark1 mark11

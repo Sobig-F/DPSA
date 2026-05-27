@@ -1,6 +1,17 @@
+#ifdef _WIN32
 #include <windows.h>
+#ifdef max
+#undef max
+#endif
+#endif
+
+#include <limits>
+#include <string>
 
 #include "Railway.hpp"
+
+#define DEFAULT_EXTRACT_FILEPATH "./struct.txt"
+#define DEFAULT_SAVE_FILEPATH "./struct.txt"
 
 #define MAIN_MENU "\
 1 - Добавить дорогу\n\
@@ -38,6 +49,7 @@ int main()
         system("chcp 65001 > nul");
         SetConsoleOutputCP(CP_UTF8);
     #endif
+
     int action = 1;
     while (action)
     {
@@ -261,6 +273,7 @@ void findTrainInDepot()
         std::cout << "Электровоз с таким регистрационным номером не найден" << std::endl;
     }
 }
+
 void findDepot()
 {
     if (railway == nullptr)
@@ -298,5 +311,38 @@ void show()
     }
 }
 
-void save(){}
-void download(){}
+void save()
+{
+    if (railway == nullptr)
+    {
+        std::cout << "Пустая структура" << std::endl;
+        return;
+    }
+
+    railway->Save(".", "struct.txt");
+}
+
+void download()
+{
+    std::string filepath = DEFAULT_EXTRACT_FILEPATH;
+    std::string user_input;
+    std::cout << "Путь к файлу (default: " << DEFAULT_EXTRACT_FILEPATH << "): " << std::flush;
+    // std::getline(std::cin >> std::ws, user_input);
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, user_input);
+
+    if (!user_input.empty())
+    {
+        filepath = user_input;
+    }
+
+    railway = Railway::Extract(filepath);
+
+    if (railway == nullptr)
+    {
+        std::cout << "Ошибка" << std::endl;
+    } else
+    {
+        std::cout << "Загружено" << std::endl;
+    }
+}

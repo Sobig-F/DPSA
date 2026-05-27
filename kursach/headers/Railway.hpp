@@ -52,6 +52,9 @@ public:
     TrainInfo findTrainInDepot(std::string reg_num_, std::string depot_number_);
 
     void show(int tab_count_ = 0);
+
+    bool Save(std::string filepath_, std::string filename_);
+    static Railway* Extract(std::string filepath_);
 };
 
 #endif
