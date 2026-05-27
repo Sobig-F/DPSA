@@ -5,3 +5,4 @@
 **/*.pch
 **/build/
 **/.DS_Store
+**/bin/
