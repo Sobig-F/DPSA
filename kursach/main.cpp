@@ -41,7 +41,7 @@ void findTrainInDepot();
 void findDepot();
 void show();
 void save();
-void download();
+void extract();
 
 int main()
 {
@@ -92,7 +92,7 @@ int main()
             save();
             break;
         case 12:
-            download();
+            extract();
             break;
         default:
             break;
@@ -322,7 +322,7 @@ void save()
     railway->Save(".", "struct.txt");
 }
 
-void download()
+void extract()
 {
     std::string filepath = DEFAULT_EXTRACT_FILEPATH;
     std::string user_input;

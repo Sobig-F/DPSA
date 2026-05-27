@@ -4,4 +4,4 @@
 *.out
 *.gch
 *.pch
-build
+kusach/build
