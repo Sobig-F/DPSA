@@ -19,13 +19,14 @@
 3 - Добавить депо\n\
 4 - Удалить депо\n\
 5 - Добавить электровоз\n\
-6 - Взять электровоз\n\
-7 - Найти поезд на дороге\n\
-8 - Найти поезд в депо\n\
-9 - Найти депо на дороге\n\
-10 - Вывести состояние структуры\n\
-11 - Сохранить структуру\n\
-12 - Загрузить структуру\n\
+6 - Извлечь электровоз\n\
+7 - Посмотреть электровоз\n\
+8 - Найти поезд на дороге\n\
+9 - Найти поезд в депо\n\
+10 - Найти депо на дороге\n\
+11 - Вывести состояние структуры\n\
+12 - Сохранить структуру\n\
+13 - Загрузить структуру\n\
 0 - Завершить работу\n\
 "
 Railway* railway = nullptr;
@@ -36,6 +37,7 @@ void addDepot();
 void deleteDepot();
 void addTrain();
 void popTrain();
+void checkTrain();
 void findTrainInRailway();
 void findTrainInDepot();
 void findDepot();
@@ -51,53 +53,37 @@ int main()
     #endif
 
     int action = 1;
-    while (action)
+    while (action != 0)
     {
         std::cout << MAIN_MENU << "Выбор: ";
         std::cin >> action;
     
         switch (action)
         {
-        case 1:
-            createRailway();
-            break;
-        case 2:
-            deleteRailway();
-            break;
-        case 3:
-            addDepot();
-            break;
-        case 4:
-            deleteDepot();
-            break;
-        case 5:
-            addTrain();
-            break;
-        case 6:
-            popTrain();
-            break;
-        case 7:
-            findTrainInRailway();
-            break;
-        case 8:
-            findTrainInDepot();
-            break;
-        case 9:
-            findDepot();
-            break;
-        case 10:
-            show();
-            break;
-        case 11:
-            save();
-            break;
-        case 12:
-            extract();
-            break;
-        default:
-            break;
+        case 1:     createRailway();        break;
+        case 2:     deleteRailway();        break;
+        case 3:     addDepot();             break;
+        case 4:     deleteDepot();          break;
+        case 5:     addTrain();             break;
+        case 6:     popTrain();             break;
+        case 7:     checkTrain();           break;
+        case 8:     findTrainInRailway();   break;
+        case 9:     findTrainInDepot();     break;
+        case 10:    findDepot();            break;
+        case 11:    show();                 break;
+        case 12:    save();                 break;
+        case 13:    extract();              break;
+        default:                            break;
         }
     }
+
+    if (railway != nullptr)
+    {
+        delete railway;
+        railway = nullptr;
+    }
+
+    return 0;
 }
 
 void createRailway()
@@ -209,13 +195,33 @@ void popTrain()
     Train* train = railway->popTrain();
     if (train != nullptr)
     {
-        std::cout   << "Марка электровоза: " << train->getStamp() << "\n"
+        std::cout   << "Марка электровоза: " << train->getStamp() << '\n'
                     << "Регистрационный номер: " << train->getRegNum() << std::endl;
         delete train;
     } else 
     {
         std::cout << "Ни в одном депо нет электровозов" << std::endl;
     }
+}
+
+void checkTrain()
+{
+    if (railway == nullptr)
+    {
+        std::cout << "Нет дороги" << std::endl;
+        return;
+    }
+
+    const Train* train = railway->checkTrain();
+
+    if (train == nullptr)
+    {
+        std::cout << "Нет поездов" << std::endl;
+        return;
+    }
+
+    std::cout   << "Марка электровоза: " << train->getStamp() << '\n'
+                << "Регистрационный номер: " << train->getRegNum() << std::endl;
 }
 
 void findTrainInRailway()
@@ -235,8 +241,8 @@ void findTrainInRailway()
 
     if (train._stamp != "")
     {
-        std::cout   << "Марка электровоза: " << train._stamp << "\n"
-                    << "Регистрационный номер: " << train._reg_num << "\n"
+        std::cout   << "Марка электровоза: " << train._stamp << '\n'
+                    << "Регистрационный номер: " << train._reg_num << '\n'
                     << "Номер депо: " << train._depot_number << std::endl;
     } else 
     {
@@ -291,8 +297,8 @@ void findDepot()
 
     if (depot != nullptr)
     {
-        std::cout   << "Номер депо: " << depot->getNumber() << "\n"
-                    << "Количество электровозов: " << depot->getCount() << "\n"
+        std::cout   << "Номер депо: " << depot->getNumber() << '\n'
+                    << "Количество электровозов: " << depot->getCount() << '\n'
                     << "Вместимость: " << depot->getCapacity() << std::endl;
     } else
     {
@@ -327,7 +333,6 @@ void extract()
     std::string filepath = DEFAULT_EXTRACT_FILEPATH;
     std::string user_input;
     std::cout << "Путь к файлу (default: " << DEFAULT_EXTRACT_FILEPATH << "): " << std::flush;
-    // std::getline(std::cin >> std::ws, user_input);
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::getline(std::cin, user_input);
 

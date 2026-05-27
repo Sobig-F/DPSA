@@ -46,6 +46,7 @@ public:
     bool deleteDepot(std::string number_);
     bool addTrain(std::string depot_number_, Train* train_);
     Train* popTrain();
+    const Train* checkTrain() const;
 
     Depot* findDepot(std::string depot_number_);
     TrainInfo findTrainInRailway(std::string reg_num_);

@@ -30,6 +30,7 @@ public:
 
     bool addTrain(Train* elem_);
     Train* popTrain();
+    const Train* checkTrain() const;
 
     std::string getNumber() const;
     int getCapacity() const;

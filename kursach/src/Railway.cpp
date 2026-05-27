@@ -6,24 +6,24 @@
 Railway::~Railway()
 {
     _name = "";
-    Node* current = this->_queue->_next;
+    Node* current = _queue->_next;
 
     while (current != nullptr)
     {
         delete _queue->_depot;
-        this->_queue->_depot = nullptr;
-        this->_queue->_prev = nullptr;
-        this->_queue->_next = nullptr;
-        delete this->_queue;
-        this->_queue = current;
+        _queue->_depot = nullptr;
+        _queue->_prev = nullptr;
+        _queue->_next = nullptr;
+        delete _queue;
+        _queue = current;
         current = current->_next;
     }
     delete _queue->_depot;
-    this->_queue->_depot = nullptr;
-    this->_queue->_prev = nullptr;
-    this->_queue->_next = nullptr;
-    delete this->_queue;
-    this->_tail = nullptr;
+    _queue->_depot = nullptr;
+    _queue->_prev = nullptr;
+    _queue->_next = nullptr;
+    delete _queue;
+    _tail = nullptr;
 }
 
 bool Railway::addDepot(std::string number_, int capacity_)
@@ -177,6 +177,8 @@ Train* Railway::popTrain()
     return result;
 }
 
+const Train* Railway::checkTrain() const { return _queue->_depot->checkTrain(); }
+
 TrainInfo Railway::findTrainInRailway(std::string reg_num_)
 {
     Train* result = nullptr;
@@ -267,9 +269,9 @@ bool Railway::Save(std::string filepath_, std::string filename_)
 
     if (!file.is_open()) { return false; }
 
-    file << this->_name << "\n";
+    file << _name << "\n";
 
-    for (Node* node = this->_queue; node != nullptr; node = node->_next)
+    for (Node* node = _queue; node != nullptr; node = node->_next)
     {
         file    << node->_depot->getNumber()    << ' '
                 << node->_depot->getCapacity()  << ' ' 
