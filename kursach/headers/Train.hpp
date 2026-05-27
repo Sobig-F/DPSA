@@ -6,7 +6,6 @@
 class Train
 {
 public:
-    Train();
     Train(std::string stamp_, std::string reg_num_);
     ~Train();
 

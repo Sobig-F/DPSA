@@ -1,16 +1,14 @@
 #include "Train.hpp"
 
-Train::Train()
-{
-    _stamp = "";
-    _reg_num = "";
-}
-
 Train::Train(std::string stamp_, std::string reg_num_)
     :   _stamp{stamp_},
         _reg_num{reg_num_}{}
 
-Train::~Train(){}
+Train::~Train()
+{
+    _stamp = "";
+    _reg_num = "";
+}
 
 std::string Train::getStamp() const { return _stamp; }
 std::string Train::getRegNum() const { return _reg_num; }

@@ -1,6 +1,32 @@
 #include "Depot.hpp"
 
-Depot::~Depot(){}
+Depot::~Depot()
+{
+    for (int i = 0; i < _count; ++i)
+    {
+        if (this->_queue[(_head + i) % this->_capacity] != nullptr)
+        {
+            delete this->_queue[(this->_head + i) % this->_capacity];
+        }
+    }
+    this->_number = "";
+    this->_capacity = 0;
+    delete this->_queue;
+    this->_head = 0;
+    this->_tail = 0;
+    this->_count = 0;
+
+}
+
+std::string Depot::getNumber() const { return _number; }
+
+int Depot::getCapacity() const { return _capacity; }
+
+int Depot::getCount() const { return _count; }
+
+int Depot::getHead() const { return this->_head; }
+
+const Train* const* Depot::getQueue() const { return this->_queue; }
 
 bool Depot::addTrain(Train* elem_)
 {
@@ -50,13 +76,6 @@ Train* Depot::popTrain()
     
     return result;
 }
-
-std::string Depot::getNumber() const { return _number; }
-int Depot::getCapacity() const { return _capacity; }
-int Depot::getCount() const { return _count; }
-int Depot::getHead() const { return this->_head; }
-
-const Train* const* Depot::getQueue() const { return this->_queue; }
 
 Train* Depot::findTrain(std::string reg_num_)
 {

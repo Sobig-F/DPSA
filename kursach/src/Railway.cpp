@@ -3,7 +3,28 @@
 #include <fstream>
 #include <string>
 
-Railway::~Railway(){}
+Railway::~Railway()
+{
+    _name = "";
+    Node* current = this->_queue->_next;
+
+    while (current != nullptr)
+    {
+        delete _queue->_depot;
+        this->_queue->_depot = nullptr;
+        this->_queue->_prev = nullptr;
+        this->_queue->_next = nullptr;
+        delete this->_queue;
+        this->_queue = current;
+        current = current->_next;
+    }
+    delete _queue->_depot;
+    this->_queue->_depot = nullptr;
+    this->_queue->_prev = nullptr;
+    this->_queue->_next = nullptr;
+    delete this->_queue;
+    this->_tail = nullptr;
+}
 
 bool Railway::addDepot(std::string number_, int capacity_)
 {
@@ -258,10 +279,11 @@ bool Railway::Save(std::string filepath_, std::string filename_)
         int capacity = node->_depot->getCapacity();
         const Train* const* trains = node->_depot->getQueue();
         const Train* train = nullptr;
+        int head = node->_depot->getHead();
 
-        for (int index = node->_depot->getHead(); index < count; ++index)
+        for (int index = 0; index < count; ++index)
         {
-            train = trains[index % capacity];
+            train = trains[(head + index) % capacity];
 
             file    << train->getStamp()    << ' '
                     << train->getRegNum()   << '\n';
@@ -293,12 +315,6 @@ Railway* Railway::Extract(std::string filepath_)
         int count = -1;
 
         if (!(file >> depotNum)) { break; }
-
-        // if ()
-        // {
-        //     delete railway;
-        //     return nullptr;
-        // }
 
         if (!(file >> capacity >> count) || file.fail() || depotNum.empty() || capacity == 0 || count < 0)
         {
