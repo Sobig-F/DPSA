@@ -1,6 +1,7 @@
 #include "sorts.hpp"
 
 #include <iostream>
+#include <math.h>
 
 void sorting_by_choice (int *array, int size)
 {
@@ -233,6 +234,205 @@ void shell_sort (int *array, int size)
     std::cout << "Перестановки: " << permutations << std::endl;
 }
 
+void pocket_sorting(int *array, int n)
+{
+    int comparisons = 0;
+    int permutations = 0;
+
+    for (int index = 0; index < n; ++index)
+    {
+        ++comparisons;
+        if (*(array + index) != index + 1)
+        {
+            permutations += 3;
+            int temp = *(array + *(array + index) - 1);
+            *(array + *(array + index) - 1) = *(array + index);
+            *(array + index) = temp;
+            
+            --index;
+        }
+    }
+
+    std::cout << "Сравнения: " << comparisons << std::endl;
+    std::cout << "Перестановки: " << permutations << std::endl;
+}
+
+void pocket_sorting_with_auxiliary_array(int *array, int n)
+{
+    int comparisons = 0;
+    int permutations = n * 2;
+
+    int *auxiliary_array = new int[n];
+
+    for (int i = 0; i < n; ++i)
+    {
+        *(auxiliary_array + *(array + i) - 1) = *(array + i);
+    }
+
+    for (int i = 0; i < n; ++i)
+    {
+        *(array + i) = *(auxiliary_array + i);
+    }
+
+    std::cout << "Сравнения: " << comparisons << std::endl;
+    std::cout << "Перестановки: " << permutations << std::endl;
+}
+
+void generalized_pocket_sorting(int *array, int n, int size)
+{
+    int comparisons = 0;
+    int permutations = n * 2;
+
+    struct Node
+    {
+        int index;
+        Node* next;
+        Node(int index_) : index(index_), next(nullptr) {}
+        ~Node()
+        {
+            if (next != nullptr)
+            {
+                delete next;
+            }
+            next = nullptr;
+        }
+    };
+
+    struct Pocket
+    {
+        Node* list;
+        Node* tail;
+        Pocket() : list(nullptr), tail(nullptr) {}
+        ~Pocket()
+        {
+            if (list != nullptr)
+            {
+                delete list;
+                list = nullptr;
+                tail = nullptr;
+            }
+        }
+    };
+    
+    Pocket* pocket = new Pocket[n];
+    
+    for (int i = 0; i < size; ++i)
+    {
+        if (pocket[*(array + i) - 1].list == nullptr)
+        {
+            pocket[*(array + i) - 1].list = new Node(i);
+            pocket[*(array + i) - 1].tail = pocket[*(array + i) - 1].list;
+        } else
+        {
+            pocket[*(array + i) - 1].tail->next = new Node(i);
+            pocket[*(array + i) - 1].tail = pocket[*(array + i) - 1].tail->next;
+        }
+    }
+
+    int* result = new int[size];
+    int index = 0;
+
+    for (int i = 0; i < n; ++i)
+    {
+        if (pocket[i].list != nullptr)
+        {
+            for (Node* current = pocket[i].list; current != nullptr; current = current->next)
+            {
+                *(result + index) = *(array + current->index);
+                ++index;
+            }
+        }
+    }
+
+    delete[] pocket;
+
+    for (int i = 0; i < size; ++i)
+    {
+        *(array + i) = *(result + i);
+    }
+
+    std::cout << "Сравнения: " << comparisons << std::endl;
+    std::cout << "Перестановки: " << permutations << std::endl;
+}
+
+void bitwise_sorting(int *array, int size, int k)
+{
+    int comparisons = 0;
+    int permutations = size * 2 * k;
+
+    struct Node
+    {
+        int data;
+        Node* next;
+        Node(int data_) : data(data_), next(nullptr) {}
+        ~Node()
+        {
+            if (next != nullptr)
+            {
+                delete next;
+                next = nullptr;
+            }
+        }
+    };
+
+    struct Pocket
+    {
+        Node* list;
+        Node* tail;
+        Pocket() : list(nullptr), tail(nullptr) {}
+        ~Pocket()
+        {
+            if (list != nullptr)
+            {
+                delete list;
+                list = nullptr;
+                tail = nullptr;
+            }
+        }
+    };
+
+    Pocket* pocket = new Pocket[10];
+    int figure;
+
+    for (int i = 1; i <= k; ++i)
+    {
+        for (int index = 0; index < size; ++index)
+        {
+            figure = (*(array + index) % (int)pow(10, i)) / (i == 1 ? 1 : (pow(10, i - 1)));
+
+            if (pocket[figure].list == nullptr)
+            {
+                pocket[figure].list = new Node(*(array + index));
+                pocket[figure].tail = pocket[figure].list;
+            } else
+            {
+                pocket[figure].tail->next = new Node(*(array + index));
+                pocket[figure].tail = pocket[figure].tail->next;
+            }
+        }
+
+        int index = 0;
+
+        for (int j = 0; j < 10; ++j)
+        {
+            if (pocket[j].list != nullptr)
+            {
+                for (Node* current = pocket[j].list; current != nullptr; current = current->next)
+                {
+                    *(array + index) = current->data;
+                    ++index;
+                }
+            }
+            delete pocket[j].list;
+            pocket[j].list = nullptr;
+            pocket[j].tail = nullptr;
+        }
+    }
+
+    std::cout << "Сравнения: " << comparisons << std::endl;
+    std::cout << "Перестановки: " << permutations << std::endl;
+}
+
 bool check_result(int *array, int size)
 {
     for (int i = 0; i + 1 < size; ++i)
@@ -244,4 +444,70 @@ bool check_result(int *array, int size)
     }
 
     return true;
+}
+
+void print_array (int *array, int count)
+{
+    for (int i = 0; i < count; ++i)
+    {
+        std::cout << *(array + i) << " ";
+    }
+
+    std::cout << std::endl;
+}
+
+int* generate_unique_array(int n)
+{
+    int* array = new int[n];
+
+    for (int i = 0; i < n; ++i)
+    {
+        *(array + i) = i + 1;
+    }
+
+    srand(time(0));
+
+    for (int i = 0; i < n; ++i)
+    {
+        int j = rand() % n;
+
+        if (i != j)
+        {
+            *(array + i) += *(array + j);
+            *(array + j) = *(array + i) - *(array + j);
+            *(array + i) -= *(array + j);
+        }
+    }
+
+    return array;
+}
+
+int* generate_array(int n, int size)
+{
+    int* array = new int[size];
+
+    srand(time(0));
+
+    for (int i = 0; i < size; ++i)
+    {
+        *(array + i) = rand() % n + 1;
+    }
+
+    return array;
+}
+
+int* random_filling (int start, int end, int count)
+{
+    int *result = new int[count];
+
+    srand(time(0));
+
+    int determ = (end - start + 1);
+
+    for (int i = 0; i < count; ++i)
+    {
+        result[i] = rand() % determ + start;
+    }
+
+    return result;
 }

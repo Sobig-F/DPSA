@@ -14,32 +14,6 @@
 4 - выход\n\
 Выбор : "
 
-int* random_filling (int start, int end, int count)
-{
-    int *result = new int[count];
-
-    srand(time(0));
-
-    int determ = (end - start + 1);
-
-    for (int i = 0; i < count; ++i)
-    {
-        result[i] = rand() % determ + start;
-    }
-
-    return result;
-}
-
-void print_array (int *array, int count)
-{
-    for (int i = 0; i < count; ++i)
-    {
-        std::cout << *(array + i) << " ";
-    }
-
-    std::cout << std::endl;
-}
-
 int main(int argc, char *argv[])
 {
     #ifdef _WIN32
