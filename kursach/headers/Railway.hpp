@@ -9,12 +9,12 @@ struct TrainInfo
 {
     std::string _stamp;
     std::string _reg_num;
-    std::string _depot_number;
+    int _depot_number;
 
     TrainInfo( 
         std::string stamp_ = "",
         std::string reg_num_ = "",
-        std::string depot_number_ = ""
+        int depot_number_ = -1
     ) :
         _stamp{stamp_},
         _reg_num{reg_num_},
@@ -34,6 +34,7 @@ private:
         Node* _next;
 
         Node(Depot* depot_) : _depot{depot_}, _next{nullptr}, _prev{nullptr}{};
+        ~Node() { _prev = nullptr; _next = nullptr; _depot = nullptr; }
     };
     
     Node* _queue;
@@ -42,15 +43,15 @@ public:
     Railway(std::string name_) : _name{name_}, _queue{nullptr}, _tail{nullptr}{};
     ~Railway();
 
-    bool addDepot(std::string number_, int capacity_);
-    bool deleteDepot(std::string number_);
-    bool addTrain(std::string depot_number_, Train* train_);
-    Train* popTrain();
-    const Train* checkTrain() const;
+    bool addDepot(int number_, int capacity_);
+    Depot* deleteDepot();
+    bool addTrain(int depot_number_, Train* train_);
+    Train* popTrain(int depot_number_);
+    const Train* checkTrain(int depot_number_) const;
 
-    Depot* findDepot(std::string depot_number_);
+    Depot* findDepot(int depot_number_);
     TrainInfo findTrainInRailway(std::string reg_num_);
-    TrainInfo findTrainInDepot(std::string reg_num_, std::string depot_number_);
+    TrainInfo findTrainInDepot(std::string reg_num_, int depot_number_);
 
     void show(int tab_count_ = 0);
 

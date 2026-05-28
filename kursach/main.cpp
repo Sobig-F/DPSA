@@ -114,7 +114,7 @@ void addDepot()
         return;
     }
     
-    std::string depot_num;
+    int depot_num;
     int depot_capacity;
 
     std::cout << "Введите номер нового депо: ";
@@ -139,13 +139,15 @@ void deleteDepot()
         return;
     }
 
-    std::string depot_num;
+    Depot* depot = railway->deleteDepot();
 
-    std::cout << "Введите номер депо: ";
-    std::cin >> depot_num;
-
-    if (railway->deleteDepot(depot_num))
+    if (depot != nullptr)
     {
+        std::cout   << "Номер депо: "               << depot->getNumber()   << '\n'
+                    << "Вместимость: "              << depot->getCapacity() << '\n'
+                    << "Количество элетровозов: "   << depot->getCount()    << std::endl;
+        
+        delete depot;
         std::cout << "Депо удалено" << std::endl;
     } else
     {
@@ -161,7 +163,7 @@ void addTrain()
         return;
     }
 
-    std::string depot_number;
+    int depot_number;
     std::string train_stamp;
     std::string train_reg_num;
 
@@ -191,7 +193,12 @@ void popTrain()
         return;
     }
 
-    Train* train = railway->popTrain();
+    int depot_number;
+
+    std::cout << "Номер депо для удаления электровоза: ";
+    std::cin >> depot_number;
+
+    Train* train = railway->popTrain(depot_number);
     if (train != nullptr)
     {
         std::cout   << "Марка электровоза: " << train->getStamp() << '\n'
@@ -211,7 +218,12 @@ void checkTrain()
         return;
     }
 
-    const Train* train = railway->checkTrain();
+    int depot_number;
+
+    std::cout << "Номер депо для просмотра электровоза: ";
+    std::cin >> depot_number;
+
+    const Train* train = railway->checkTrain(depot_number);
 
     if (train == nullptr)
     {
@@ -258,7 +270,7 @@ void findTrainInDepot()
     }
 
     std::string train_reg_num;
-    std::string depot_number;
+    int depot_number;
 
     std::cout << "Номер депо: ";
     std::cin >> depot_number;
@@ -287,7 +299,7 @@ void findDepot()
         return;
     }
 
-    std::string depot_number;
+    int depot_number;
 
     std::cout << "Номер депо: ";
     std::cin >> depot_number;

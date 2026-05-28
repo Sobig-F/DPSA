@@ -27,7 +27,7 @@ Railway::~Railway()
     _tail = nullptr;
 }
 
-bool Railway::addDepot(std::string number_, int capacity_)
+bool Railway::addDepot(int number_, int capacity_)
 {
     if (_queue == nullptr)
     {
@@ -37,57 +37,55 @@ bool Railway::addDepot(std::string number_, int capacity_)
         return true;
     }
 
-    _tail->_next = new Node(new Depot(number_, capacity_));
-    _tail->_next->_prev = _tail;
-    _tail = _tail->_next;
+    if (number_ < _queue->_depot->getNumber())
+    {
+        _queue->_prev = new Node(new Depot(number_, capacity_));
+        _queue->_prev->_next = _queue;
+        _queue = _queue->_prev;
+        return true;
+    }
+
+    if (number_ >= _tail->_depot->getNumber())
+    {
+        _tail->_next = new Node(new Depot(number_, capacity_));
+        _tail->_next->_prev = _tail;
+        _tail = _tail->_next;
+        return true;
+    }
+
+    Node* current = _queue;
+
+    while (number_ > current->_depot->getNumber()) { current = current->_next; }
+
+    Node* temp = new Node(new Depot(number_, capacity_));
+    temp->_next = current;
+    temp->_prev = current->_prev;
+    current->_prev->_next = temp;
+    current->_prev = temp;
 
     return true;
 }
 
-bool Railway::deleteDepot(std::string number_)
+Depot* Railway::deleteDepot()
 {
-    Node* current = _queue;
-    while (current != nullptr && current->_depot->getNumber() != number_)
-    {
-        current = current->_next;
-    }
+    if (_queue == nullptr) { return nullptr; }
 
-    if (current == nullptr)
-    {
-        return false;
-    }
+    Depot* result = _queue->_depot;
 
-    if (current == _queue && _queue == _tail)
-    {
-        delete current;
-        _queue = nullptr;
-        _tail = nullptr;
-        return true;
-    }
-
-    if (current == _queue)
+    if (_queue->_next != nullptr)
     {
         _queue = _queue->_next;
+        delete _queue->_prev;
         _queue->_prev = nullptr;
-        delete current;
-        return true;
-    }
-
-    if (current == _tail)
+    } else
     {
-        _tail = _tail->_prev;
-        _tail->_next = nullptr;
-        delete current;
-        return true;
+        delete _queue;
     }
 
-    current->_prev->_next = current->_next;
-    current->_next->_prev = current->_prev;
-    delete current;
-    return true;
+    return result;
 }
 
-bool Railway::addTrain(std::string depot_number_, Train* train_)
+bool Railway::addTrain(int depot_number_, Train* train_)
 {
     Node* target_node = _queue;
 
@@ -96,89 +94,77 @@ bool Railway::addTrain(std::string depot_number_, Train* train_)
         target_node = target_node->_next;
     }
 
-    if (target_node == nullptr)
-    {
-        return false;
-    }
+    if (target_node == nullptr) { return false; }
 
-    bool result = target_node->_depot->addTrain(train_);
+    return target_node->_depot->addTrain(train_);
 
-    if (!result || target_node == _queue ||
-        (target_node->_prev != nullptr && target_node->_depot->getCount() <= target_node->_prev->_depot->getCount()))
-    {
-        return result;
-    }
+    // if (!result || target_node == _queue ||
+    //     (target_node->_prev != nullptr && target_node->_depot->getCount() <= target_node->_prev->_depot->getCount()))
+    // {
+    //     return result;
+    // }
 
-    Node* current_node = target_node->_prev;
-    int target_count = target_node->_depot->getCount();
-    while (current_node != nullptr && target_count > current_node->_depot->getCount())
-    {
-        current_node = current_node->_prev;
-    }
+    // Node* current_node = target_node->_prev;
+    // int target_count = target_node->_depot->getCount();
+    // while (current_node != nullptr && target_count > current_node->_depot->getCount())
+    // {
+    //     current_node = current_node->_prev;
+    // }
 
-    target_node->_prev->_next = target_node->_next;
-    if (target_node->_next != nullptr)
-    {
-        target_node->_next->_prev = target_node->_prev;
-    }
+    // target_node->_prev->_next = target_node->_next;
+    // if (target_node->_next != nullptr)
+    // {
+    //     target_node->_next->_prev = target_node->_prev;
+    // }
 
-    if (current_node == nullptr)
-    {
-        _queue->_prev = target_node;
-        target_node->_next = _queue;
-        target_node->_prev = nullptr;
-        _queue = target_node;
-        return result;
-    }
+    // if (current_node == nullptr)
+    // {
+    //     _queue->_prev = target_node;
+    //     target_node->_next = _queue;
+    //     target_node->_prev = nullptr;
+    //     _queue = target_node;
+    //     return result;
+    // }
 
-    if (_tail == target_node)
-    {
-        _tail = target_node->_prev;
-    }
-    target_node->_next = current_node->_next;
-    current_node->_next->_prev = target_node;
-    target_node->_prev = current_node;
-    current_node->_next = target_node;
+    // if (_tail == target_node)
+    // {
+    //     _tail = target_node->_prev;
+    // }
+    // target_node->_next = current_node->_next;
+    // current_node->_next->_prev = target_node;
+    // target_node->_prev = current_node;
+    // current_node->_next = target_node;
 
-    return result;
+    // return result;
 }
 
-Train* Railway::popTrain()
+Train* Railway::popTrain(int depot_number_)
 {
-    Train* result = _queue->_depot->popTrain();
-
-    if (_queue->_next == nullptr || _queue->_depot->getCount() >= _queue->_next->_depot->getCount())
-    {
-        return result;
-    }
-
-    Node* current_node = _queue->_next;
-    int head_count = _queue->_depot->getCount();
-    while (current_node != nullptr && head_count <= current_node->_depot->getCount())
-    {
-        current_node = current_node->_next;
-    }
-
     Node* target_node = _queue;
-    _queue = _queue->_next;
-    _queue->_prev = nullptr;
 
-    target_node->_next = current_node;
-    if (current_node == nullptr)
+    while (target_node != nullptr && target_node->_depot->getNumber() != depot_number_)
     {
-        target_node->_prev = _tail;
-        _tail = target_node;
-    } else
-    {
-        target_node->_prev = current_node->_prev;
-        target_node->_next->_prev = target_node;
+        target_node = target_node->_next;
     }
-    target_node->_prev->_next = target_node;
 
-    return result;
+    if (target_node == nullptr) { return nullptr; }
+
+    return target_node->_depot->popTrain();
 }
 
-const Train* Railway::checkTrain() const { return _queue->_depot->checkTrain(); }
+const Train* Railway::checkTrain(int depot_number_) const
+{
+    Node* target_node = _queue;
+
+    while (target_node != nullptr && target_node->_depot->getNumber() != depot_number_)
+    {
+        target_node = target_node->_next;
+    }
+
+    if (target_node == nullptr) { return nullptr; }
+
+    return target_node->_depot->checkTrain();
+}
 
 TrainInfo Railway::findTrainInRailway(std::string reg_num_)
 {
@@ -199,7 +185,7 @@ TrainInfo Railway::findTrainInRailway(std::string reg_num_)
     return TrainInfo();
 }
 
-TrainInfo Railway::findTrainInDepot(std::string reg_num_, std::string depot_number_)
+TrainInfo Railway::findTrainInDepot(std::string reg_num_, int depot_number_)
 {
     Depot* depot = findDepot(depot_number_);
 
@@ -222,7 +208,7 @@ TrainInfo Railway::findTrainInDepot(std::string reg_num_, std::string depot_numb
     return TrainInfo();
 }
 
-Depot* Railway::findDepot(std::string depot_number_)
+Depot* Railway::findDepot(int depot_number_)
 {
     Node* current = _queue;
     while (current != nullptr && current->_depot->getNumber() != depot_number_)
@@ -320,13 +306,13 @@ Railway* Railway::Extract(std::string filepath_)
 
     while (true)
     {
-        std::string depotNum;
+        int depotNum = -1;
         int capacity = 0;
         int count = -1;
 
         if (!(file >> depotNum)) { break; }
 
-        if (!(file >> capacity >> count) || file.fail() || depotNum.empty() || capacity == 0 || count < 0)
+        if (!(file >> capacity >> count) || file.fail() || depotNum == -1 || capacity == 0 || count < 0)
         {
             delete railway;
             return nullptr;

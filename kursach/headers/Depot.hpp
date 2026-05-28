@@ -8,7 +8,7 @@
 class Depot
 {
 private:
-    std::string _number;
+    int _number;
     int _capacity;
     int _count;
 
@@ -17,7 +17,7 @@ private:
     int _tail;
     
 public:
-    Depot(std::string number_, int capacity_)
+    Depot(int number_, int capacity_)
         :   _number{number_},
             _capacity{capacity_},
             _queue{new Train*[_capacity]},
@@ -32,7 +32,7 @@ public:
     Train* popTrain();
     const Train* checkTrain() const;
 
-    std::string getNumber() const;
+    int getNumber() const;
     int getCapacity() const;
     int getCount() const;
     int getHead() const;

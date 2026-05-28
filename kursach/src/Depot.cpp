@@ -9,7 +9,7 @@ Depot::~Depot()
             delete _queue[(_head + i) % _capacity];
         }
     }
-    _number = "";
+    _number = -1;
     _capacity = 0;
     delete[] _queue;
     _head = 0;
@@ -18,7 +18,7 @@ Depot::~Depot()
 
 }
 
-std::string Depot::getNumber() const { return _number; }
+int Depot::getNumber() const { return _number; }
 
 int Depot::getCapacity() const { return _capacity; }
 
