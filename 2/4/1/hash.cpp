@@ -30,7 +30,7 @@ void addElement(std::string value_)
 		}
 		else {
 			std::cout << "Произошёл конфликт текстовых ключей с " << hashTable[index] << " , меняем исходный текстовый ключ:" << std::endl;
-			value_ = value_ + ")";
+			value_ = value_ + "$";
 			std::cout << "> " << value_ << std::endl;
 			std::cout << "-----" << std::endl;
 		}
